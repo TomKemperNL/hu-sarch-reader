@@ -1,0 +1,30 @@
+= Software Architecture
+:doctype: book
+:sectnums:
+:bibliography-database: referenties.bib
+:bibliography-hyperlinks: true
+:bibtex-style: apa
+:toc:
+:toclevels: 1
+Tom Kemper, en hopelijk nog veel meer
+
+include::./sarch/1-intro.adoc[]
+include::./sarch/2-packages-dependencies.adoc[]
+include::./sarch/3-components.adoc[]
+include::./sarch/4-layers.adoc[]
+include::./sarch/5-reconstruction.adoc[]
+include::./sarch/6-compliance.adoc[]
+
+
+// Voorbeeldjes uit asciidoc bibtex docs... Vast later nodig
+// cite:[evans_domain-driven_2004]
+// cite:[Lane12a]+[Lane12b]
+// cite:[Anderson04, page=10]
+// cite:[Anderson04, chapter=10]
+// cite:[Anderson04, page=10, chapter=12]
+// cite:[Lane12a, page=42]+[Lane12b, opus=12]
+
+## Bibliography
+
+bibliography::[]
+
