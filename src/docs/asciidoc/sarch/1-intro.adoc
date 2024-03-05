@@ -1,11 +1,139 @@
 == Wat is Software Architecture
 
+Meestal beginnen we een vak met een droge definitie waar het allemaal om zal gaan.
+
+Laten we dat nu ook doen, volgens cite:[documenting_software_architectures]:
+
+[quote, Documenting Software Architectures (2010)]
+"The software architecture of a computing system is the set of structures needed to reason about the system, which comprise software elements, relations among them, and properties of both."
+
+Een definitie als deze is technisch gezien waar. Maar het is niet geheel duidelijk waar we nu moeten beginnen met leren over Software Architecturefootnote:[Termen en yargon zijn voornamelijk in het Engels gelaten. Als je het niet vertaalt klinkt het raar, als je het wel vertaalt ook. En als je het soms-wel/soms-niet vertaalt wordt het niet beter...].
+
+Het is goed om te weten dat we niet alleen zijn, in "Who needs an Architect" cite:[who_needs_an_architect] vertelt een de jaren 90/00 beroemde architect Martin Fowler over een discussie met Ralph Jonson, één van de Gang of Four die Design Patterns (cite:[gof_design_patterns]) zo beroemd hebben gemaakt:
+
+[quote, Ralph Johnson]
+“Architecture is the decisions that you wish you could get right early in a project.
+ . . .
+Architecture is about the important stuff. Whatever that is."
+
+Kortom, in tegenstelling tot bijv. Object Oriented Programming, waar we direct een redelijke definitie konden geven, zitten we hier met een probleemfootnote:[Nouja, strict gezien is de definitie van OOP ook een heet hangijzer, maar dan moet je wat verder terug in de tijd. Zie bijv. https://wiki.c2.com/?NobodyAgreesOnWhatOoIs[Deze discussie op C2 wiki, een soort oude internet boomhut van programmeurs.]].
+
+Wat we uit deze definities, zowel de formele, als de gekscherende kunnen opmaken is dat Software Architecture gaat over het _design_ van software, dat het belangrijk is, en dat het gaat over 'het grote plaatje', de grove blokken en hoe die zich tot elkaar verhouden. Verder zien we dat het iets is dat vaak aan het begin van het project belangrijk is: iets waar we aan het begin in willen _investeren_ zodat we er later profijt van hebben (meer profijt dan de initiele moeite kostte).
+
+Een laatste perspectief om mee te nemen: 
+
+[quote, Adam Judge of Martin Douglas, onduidelijk]
+The alternative to Good Design is always Bad Design. There is no such thing as No Design.
+
+Als we geen Software Architecture-werkzaamheden uitvoeren betekent dat niet dat ons eindproduct geen architectuur zal hebben. 
 
 == Wat doet een Software Architect
 
+De rol van Software Architect is vaak een vrij seniore rol in het team. Om een succesvolle architect te zijn moet je goed op de hoogte zijn van de technische werking van het systeem waar je aan werkt, maar ook de bedrijfscontext waarin het ingezet wordt.
+
+Kortom de Software Architect is van vele markten thuis. Dit is de oorzaak (of juist het gevolg?) van het feit dat de Software Architect veel tijd spendeert aan het communiceren met de verschillende stakeholders. Het idee (cite:[hophe_elevator]) is dat de Software Architect kan taakswitchen tussen op hoog niveau praten over de strategische doelen van de organisatie, wat wil het management bereiken, maar ook even nuttige gesprekken kan voeren met de individuele projectmanagers over wat haalbaar is in welke sprint, en tot slot ook nog even naast een developer op een stoel kan gaan zitten om even te pair-programmen.
+
+Dit is een ervaring die veel developers delen wanneer ze van junior-niveau opklimmen naar senior. Op een gegeven moment kom je bijna niet meer aan programmeren toe! (TODO: mooie citatie hiervoor)
+
+Tot slot, als communiceren zo'n belangrijk onderdeel is van je taak. Dan moet je ook kunnen communiceren als je niet beschikbaar bent: oftewel je moet alles goed kunnen documenteren.
 
 == Software Architectuur Producten
 
-=== OpenUP
+Het primaire product dat we ontwikkelen als Software Architect zijn modellen van de applicatie. Het is verleidelijk om bij het woord "model" gelijk aan plaatjes te denken, en in de praktijk noemen we de vele plaatjes in software-architecture documenten ook wel "modellen", maar strict genomen is dat ietwat misleidend. Een model is een mentaal construct. Het is een manier van denken over de applicatie. Een model leeft dus in je hoofd.
+
+Onze eerste verantwoordelijkheid als architect is dus om goede manieren van denken over de applicatie te hebben. We dienen dus een zekere expertise te bezitten over het systeem in kwestie. Uiteraard is dat niet voldoende, want daar hebben onze teamleden en andere stakeholders niet zoveel aan, ze kunnen immers niet in ons hoofd kijken.
+
+Het volgende probleem is dus hoe we onze gedachten over onze modellen communiceren met anderen. En het is heel moeilijk om met veel verschillende mensen, met verschillende achtergronden, interesses, en doelen, te communiceren. Omdat dit zo moeilijk is zijn er over de jaren heen vele verschillende standaarden bedacht.
+
+De exacte standaarden zijn niet essentieel (die komen en gaan), maar de gedachten achter de standaarden zijn vrij constant.
+
+Een groot risico is dat we de relatie tussen de documenten en de expertise omdraaien. Het is relatief eenvoudig om op basis van genoeg voorbeelden allerhande diagrammen uit te draaien die 'lijken op wat andere architecten doen', en aangezien helaas Software Architecture de bredere reputatie heeft om onbegrijpelijk te zijn is het goed te doen om op die manier jaren onopgemerkt in een organisatie te leven. Dit wordt wel gekscherend de "Armchair Architect" genoemd cite:[richards_ford_fundamentals].
+
+Zorg er dus eerst voor dat je iets te zeggen hebt, en maak je daarna pas zorgen over hoe je dat in code, tekst, UML, of andere wijze uitdrukt. Maar om niet geheel het wiel opnieuw uit te vinden is het wel handig om een paar 'wijze lessen uit het verleden' mee te pikken...
+
+=== UML
+
+UML is niet het meest populaire stuk gereedschap voor programmeurs. Tegenwoordig wordt meestal een per-bedrijf-net-anders informeel dialect van vierkantjes en pijltjes gebruikt om design-beslissingen toe te lichten, of bij een whiteboard te overleggen. 
+
+Daar is op zich niet zoveel mis mee, maar het is niet handig om dat op een school te leren. Daarom kiezen we _een standaard_. 
+
+We maken gebruik van een subset van de diagrammen:
+
+* Class Diagrams
+* Sequence Diagrams
+* Package Diagrams (evt. met classes)
+* Component Diagrams
+
+(TODO: korte herhaling)
+
+=== Architectural Notebook
+
+Een gouwe ouwe in het inrichten van een Software Development proces is de (Rational) Unified Procesfootnote:[Strict genomen hebben we het hier over het later afgesplitste Open Unified Proces, maar dat is ondertussen alweer een zachte dood gestorven, terwijl het product van het bedrijf Rational nog bestaat]. 
+
+Voor Software Architecture is het relevantste onderdeel het Architectural Notebook. Dat is een (hopelijk kort) document met daarin grofweg:
+
+1. Architectural Goals
+2. Architecturally Significant Requirements
+    * Functional
+    * Non-Functional
+3. Decisions & Justifications
+4. Key Abstractions / Domain Model
+5. Software Partioning
+6. Deployment Model
+
+De Architectural Goals zijn een korte introductie waarom het document überhaupt nodig is. Zelfs als je besluit alles compleet _Vanilla_ volgens allerhande _Best Practices_ te doen is het goed om hier toe te lichten welke standaarden je volgt. Maar meestal is er (buiten schoolprojecten) wel 'iets geks' in je project, of in je systeem te benoemen wat hier nadere toelichting vereist.
+
+De volgende stap zijn de _architecturally significant_ requirements. Klassiek gezien delen we die in tweeën: de eerste categorie zijn de Functional requirements, dat zijn eisen aan je product die vooral over de uiteindelijke werking gaan. 
+
+Functional Requirements vertellen je wat het systeem moet gaan doen? Welk probleem lost het op? https://aosabook.org/en/v2/nginx.html[Nginx] is bijv. primair een web-server, het serveert web-paginas en applicaties. https://www.minecraft.net/en-us[Minecraft] is een soort virtuele LEGO. https://discord.com/[Discord] is een Chat-programma, op een bijzondere manier. 
+
+In de functional requirements duik je dieper op deze algemene doelen in en probeer je specifiek te verwoorden wat je product moet doen. In het geval van nginx zullen dat HTTP-gerelateerde requirements zijn. Minecraft zal requirements hebben over hoe er precies gebouwd mag worden, dat er een 1st en een 3rd person perspectief is, etc. Discord zal iets zeggen over hoe hun Servers en hun Nitro exact werktfootnote:[De vaagheid van Nitro doet me zo oud voelen...].
+
+Functional Requirements zijn vaak uniek aan je project (concurrenten buiten beschouwing gelaten). En hoewel Functional Requirements _super belangrijk_ zijn voor je architectuur is het vaak in de literatuur niet veel besproken. Ze zijn immers vrij uniek, dus het is lastig advies erover te gevenfootnote:[In jaar 3 gaan we dieper in op https://martinfowler.com/bliki/DomainDrivenDesign.html[Domain-Driven Design], die hier juist wel op in gaat, maar dat is dan, en dit is nu.]. Men gaat er vanuit dat je de wijsheid van de *andere* categorie ook automatisch op deze kan toepassen.
+
+Non-Functional Requirements gaan dus ...niet... over de uiteindelijke functie van de applicatie. Ze gaan over _hoe_ die functionaliteit bereikt wordt. Je moet hier denken aan bijv. https://iso25000.com/index.php/en/iso-25000-standards/iso-25010[ISO 25010] zaken, zoals Performance, Security, Maintainability, Usability, etc. Deze zaken zijn relevant voor elke applicatie, en zodoende zijn er ook makkelijker algemene adviezen over te geven.
+
+Let echter wel op, we hebben het hier over Architecturally *Significant* requirements. Neem bijv. Performance, iedereen wil dat z'n systeem een beetje performt. Niemand accepteert een website die per request vijf minuten staat te ratelen. Maar stel je hebt je applicatie gewoon via een standaard Java-Spring-Heroku/Render/XYZ opzet online gezet, dan is waarschijnlijk Performance niet Architecturally Significant geweest. Je hebt gewoon algemene best-practices gevolgd, en het eindresultaat was prima. Het feit dat je performance 'best belangrijk' vindt betekent niet automatisch dat het Architecturally Significant is. Iets wordt pas Significant als je er in je ontwerp expliciet rekening mee moet houden. Dus stel je hebt overal er voor gezorgd dat 1 HTTP request van de client max. 1 Database-query kan opleveren, dan zul je daar waarschijnlijk grote offers voor hebben moeten brengen qua structuur (bijv. qua modulariteit; het is lastig, doch niet onmogelijk, losse modules apart te houden als ze allemaal al hun data uit die ene query moeten krijgen).
+
+Kortom Architecturally Significant betekent dat het aanwijsbaar invloed op je ontwerpkeuzes heeft gehad. Niet alleen maar dat je 'het belangrijk vond'. Als je nog niet zo ver in je project/systeem bent is het dus 'ok' (niet ideaal, maar ok) om nog te moeten ontdekken wat dedaadwerkelijk significante requirements zijn. 
+
+De gevolgen van de gekozen significante requirements en best-practices zijn natuurlijk de moeite waard om te documenteren. En dat brengt ons bij het derde standaard onderdeel van zo'n notebook, de Decisions en Justifications. Hier komt de rol als communicator weer tevoorschijn. De rechtvaardiging van je beslissingen is belangrijker dan de daadwerkelijke beslissing.
+
+Je mag, en zal het vaak mis hebben als architect (maar hopelijk heb je het nog vaker bij het rechte eind!). Het is daarom essentieel om te documenteren _waarom_ je een bepaalde beslissing (meestal een beperking) hebt opgelegd. Idealiter accepteren de andere stakeholders je beslissing, maar zo niet, dan ligt het initatief om jou te weerleggen bij hen. En met goede argumenten overtuigd worden tot een betere oplossing is niet een vorm van verliezen. Dat is winst voor het hele team. Je bent als architect de bewaker van de structuur, niet noodzakelijk de bedenker.
+
+. Domain Model.
+
+. De grote lijnen hoe we het systeem willen verdelen.
+
+. Hoe we het uiteindelijk live gaan zetten.
+
+**** 
+Tijd voor een bekentenis. Ik heb nog *nooit* een Architectural Notebook zoals hierboven beschreven daadwerkelijk uitgeschreven. Het voelt altijd als iets waar je 'eigenlijk geen tijd voor hebt'.
+
+Wel heb ik al het denkwerk wat in zo'n Notebook zit gedaan. Dus ik had het kunnen opschrijven. In plaats daarvan zat ik in een klein team, dus kon deze gedachten vaak redelijk overbrengen op informele wijze. In discussies, of gefragmenteerd in allerlei comments, en JIRA-tickets.
+
+De vragen die zo'n Notebook stelt kun je niet ontwijken. En zeker als je in een groter team, of bij een formeler bedrijf werkt, is het echt de moeite waard om deze gedachten netjes op te schrijven. Het UP-Notebook is maar één standaard tussen velen. Zorg dat je weet wat je zou moeten schrijven, dan is de methode waarop slechts een detail. Kijk dus naar deze formele methodes en standaarden als hulpmiddelen om aan zaken te denken waar je normaal gesproken niet aan zou denken.
+
+-Tom
+****
+
 
 === 4+1 Views
+
+Een klassieker in deze hoek is het 4+1 model cite:[kruchten_41]. 
+
+
+=== Logisch vs. Fysiek
+
+Een veel terugkomend onderscheid in deze cursus is het onderscheid tussen een Logisch niveau van modelleren, en een Fysiek niveau. Dit correspondeert grofweg met het Logische en het Development perspectief in Kruchten, maar is toch weer net ietsje anders.
+
+In plaats van een perspectief is dit onderscheid bedoeld als schaal van detail, niet noodzakelijk gebonden aan doel-publiek.
+
+=== Architecture Decision Records
+
+(TODO: uitwerken)
+ADRs zijn een wat modernere standaard om architecturele beslissingen vast te leggen en bij te houden. Het is een vrij light-weight standaard, wat fijn is omdat er dus niet ineens een heel groot document getyped hoeft te worden, maar ook een beetje lastig, omdat er dus ook niet echt een leidraad is wat je er nou mee moet.
+
+De simpelste lezing is dat het plain-text documenten (bijv. Markdown) documenten zijn in je repository, met een bepaalde structuur, die op een bepaalde manier naar elkaar linken.
+
+Zie bijv https://github.com/npryce/adr-tools[ADR Tools] voor een vrij breed gebruikte standaard om ze aan te maken.
