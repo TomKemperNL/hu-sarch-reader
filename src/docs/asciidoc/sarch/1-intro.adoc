@@ -101,18 +101,26 @@ De gevolgen van de gekozen significante requirements en best-practices zijn natu
 
 Je mag, en zal het vaak mis hebben als architect (maar hopelijk heb je het nog vaker bij het rechte eind!). Het is daarom essentieel om te documenteren _waarom_ je een bepaalde beslissing (meestal een beperking) hebt opgelegd. Idealiter accepteren de andere stakeholders je beslissing, maar zo niet, dan ligt het initatief om jou te weerleggen bij hen. En met goede argumenten overtuigd worden tot een betere oplossing is niet een vorm van verliezen. Dat is winst voor het hele team. Je bent als architect de bewaker van de structuur, niet noodzakelijk de bedenker.
 
-. Domain Model.
+Het vierde standaard-element is een overzicht van het domein-model, ook wel bekend als de 'key-abstractions'. Elke class (aangenomen een Object-Oriented taal als Java) in ons model is noodzakelijk een versimpeling van de werkelijkheid, en is zodoende al een 'abstractie'. Stel we hebben een class "Product" voor stripboeken, dan modelleren we waarschijnlijk de staat als "Zo-goed-als-nieuw", in plaats van 'dat ene minieme vouwtje op pagina 33'. We laten details weg, dus het is een abstractie. We hebben het hier dus niet noodzakelijk over complexere OOP zaken zoals Interfaces of Abstract Classes. Je kunt hier volstaan met een nette beschrijving in woorden, of (vaak iets korter) een UML class-diagram.
 
-. De grote lijnen hoe we het systeem willen verdelen.
+Let er op dat we hier niet _volledig_ willen zijn. Volledig is misschien wel _correct_, maar meestal zal een domein-model in een echt systeem zoveel details bevatten dat je elke lezer totaal zou overrompelen. Bedenk welk verhaal je wil vertellen, en hou rekening met de bedoelde lezer van je notebookfootnote:[Standaard zou ik zeggen dat je notebook voor 'een nieuw teamlid' is. Dat kan een developer, een tester, een project-manager, of wat-dan-ook zijn. In aparte gevallen kan het doelpubliek van je notebook misschien iets anders zijn, zoals bijv. een geldschieter die wil kijken welk team budget krijgt? Dan krijg je een héél ander document.].
 
-. Hoe we het uiteindelijk live gaan zetten.
+Het vijfde onderdeel is de algemene partionering van het systeem. Dat is een belangrijk onderdeel. Zo belangrijk dat we er twee aparte hoofdstukken voor inruimen: <<Components>> en <<Layers>>. Dus daar laten we het hier even bij.
+
+Tot slot is het belangrijk om stil te staan bij het Deployment Model, oftewel, wat zijn je gedachten over hoe het uiteindelijk _live_ komt te staan. Dat is belangrijk, want software bouwen op je developer-laptop is niet de baan van een Software Developer. Software moet de wereld in.
+
+Dit is stiekem echt belangrijk. Het is heel verleidelijk om er vanuit te gaan dat 'als het op mijn laptop draait, hoe moeilijk kan het dan nog zijn?!'. En het praktische antwoord is helaas vaak 'heel moeilijk'.
+
+Gelukkig is er vaak in elk project ook een ideaal moment om deze problemen aan te pakken, namelijk helemaal aan het begin. Helemaal aan het begin is vaak nog niet helemaal duidelijk _wat_ er precies moet gebeuren, maar de algemene eisen zijn vaak wel helder (het wordt een website, of een mobiele app, of een game op de Nintendo Switch, etc.), en de algemene randvoorwaarden ook (we gaan een database nodig hebben, of een barcode scanner, of een VR bril, etc.).
+
+Meestal zit er in deze fase van ontwikkeling een boel 'dode tijd'. Je kunt nog niet echt lekker beginnen, omdat je nog niet precies weet welke kant op. Dit helder krijgen vereist vaak een boel praten, vergaderen, mailen en ...wachten. Tijdens dat wachten kun je vaak werken aan een eerste 'hello world'-achtige applicatie proberen live te zetten. Dit noemt men ook wel een "Walking Skeleton" cite:[things].
 
 **** 
 Tijd voor een bekentenis. Ik heb nog *nooit* een Architectural Notebook zoals hierboven beschreven daadwerkelijk uitgeschreven. Het voelt altijd als iets waar je 'eigenlijk geen tijd voor hebt'.
 
-Wel heb ik al het denkwerk wat in zo'n Notebook zit gedaan. Dus ik had het kunnen opschrijven. In plaats daarvan zat ik in een klein team, dus kon deze gedachten vaak redelijk overbrengen op informele wijze. In discussies, of gefragmenteerd in allerlei comments, en JIRA-tickets.
+Wel heb ik al het denkwerk wat in zo'n Notebook zit gedaan. Het *model* was er dus en ik had het kunnen (moeten?) opschrijven. In plaats daarvan zat ik in een klein team, dus kon deze gedachten vaak redelijk overbrengen op informele wijze. In discussies, of gefragmenteerd in allerlei comments, en JIRA-tickets.
 
-De vragen die zo'n Notebook stelt kun je niet ontwijken. En zeker als je in een groter team, of bij een formeler bedrijf werkt, is het echt de moeite waard om deze gedachten netjes op te schrijven. Het UP-Notebook is maar één standaard tussen velen. Zorg dat je weet wat je zou moeten schrijven, dan is de methode waarop slechts een detail. Kijk dus naar deze formele methodes en standaarden als hulpmiddelen om aan zaken te denken waar je normaal gesproken niet aan zou denken.
+De vragen die zo'n Notebook stelt kun je niet ontwijken. En zeker als je in een groter team, of bij een formeler bedrijf werkt, is het echt de moeite waard om deze gedachten netjes op te schrijven. Het UP-Notebook is maar één standaard tussen velen. Zorg dat je weet wat je zou moeten schrijven, dan is de methode waarop slechts een detail. Kijk dus vooral naar deze formele methodes en standaarden als hulpmiddelen om aan zaken te denken waar je normaal gesproken niet aan zou denken.
 
 -Tom
 ****
@@ -120,8 +128,27 @@ De vragen die zo'n Notebook stelt kun je niet ontwijken. En zeker als je in een 
 
 === 4+1 Views
 
-Een klassieker in deze hoek is het 4+1 model cite:[kruchten_41]. 
+Een klassieker in deze hoek is het 4+1 model cite:[kruchten_41]. We hebben net gezien hoe belangrijk en moeilijk communicatie is. Dus hoe kunnen we het ons (ietsje) makkelijker maken?
 
+Door niet één ontwerp/document/model te hanteren voor ieder mogelijk scenario! Als we accepteren dat we op verschillende manieren over een systeem kunnen nadenken, en als we accepteren dat we die gedachten (dat model!) moeten uitleggen aan verschillende mensen, dan is het hartstikke logisch dat we niet één document moeten schrijven, maar meerdere.
+
+Dat klinkt als nog meer werk, maar meestal is het makkelijker vier modellen te construeren dan om er één te maken (en te falen) die geschikt is voor iedereen. En niet elk model heeft noodzakelijkerwijs z'n eigen document nodig. Deze verschillende zienswijzen noemt Kruchten (niet geheel verrassend) _views_, en hij heeft er ...4+1... (tromgeroffel)... 5 van! 
+
+Stel we nemen als doorlopend voorbeeld het werken van het menselijk hartfootnote:[Een bioloog zou ons uitlachen, maar dat is nu even niet het punt]. Niet een ICT systeem, maar vergelijkbaar.
+
+1. Process View
+2. Development View
+3. Logical view
+4. Deployment View
+*. Usecase View
+
+De eerste is de Process View. Hier bekijken we belangrijke onderdelen van het proces en hoe die zich temporeel verhouden. Dus eerst pompt het hart het bloed rond, dan geeft het bloed zuurstof af aan organen, en dan pas wordt het weer ge-oxygeneerd. Voor een software project kun je hier denken aan Sequence Diagrammen, BPMN modellen, of (indien duidelijk genoeg) een tekstuele beschrijving. Idealiter kunnen de business-experts aan de hand van deze informatie kritisch kijken naar de geplande (of gerealiseerde) werking van het systeem, zonder verdwaald te raken in technisch detail.
+
+De Development View is er op gericht hoe developers met het systeem dienen te interacteren. In ons voorbeeld zou dit een uitgebreide beschrijving zijn waar welk onderdeel van het hart zit, hoe een incisie gemaakt dient te worden, en hoe je 'in het algemeen' een hart-transplantatie uitvoert (aangenomen dat de chirurg hier de rol van developer vervult). Voor een software project zijn dit je component/class diagrammen, een duidelijke proof-of-concept, of een goede README in de root van je repo. Wat de developers nodig hebben om het project te begrijpen.
+
+De Logical View zoomt juist een beetje uit, om vooral te focussen op de functionaliteit. In een software project zijn dit bijv. package diagrammen, of informele 'boxes & arrows'. Dit is handig zodat je bijv. kan inschatten wat er wel/niet blijft werken als er problemen zijn, of hoe werk verdeeld moet worden. In ons harten-voorbeeld zou je bijv. beschrijven hoe het hart als een pomp werkt, en een overzicht van de rol van de verschillende aderen. Handig als je als dokter moet beslissen waar je _eerst_ aan het werk gaat. Liever de slagader eerst dicht, en daarna pas die bij je pink. 
+
+De Deployment View gaat dan juist in op hoe het systeem gedeployed moet worden. In ons voorbeeld zou dat het medische dossier van mevrouw de Vries zijn, met belangrijke informatie zoals haar anatomie, bloedgroep, etc. In een software project is het een beschrijving waar en hoe de software in productie gaat draaien. Dus in het geval van een website op wat voor servers het gaat draaien (bijv. in een cloud), of wat voor mobiele devices, of dat het misschien via Steam op directe client-pcs gaat draaien. In complexe gevallen kan een UML Deployment Diagram uitkomst bieden.
 
 === Logisch vs. Fysiek
 
@@ -129,9 +156,20 @@ Een veel terugkomend onderscheid in deze cursus is het onderscheid tussen een Lo
 
 In plaats van een perspectief is dit onderscheid bedoeld als schaal van detail, niet noodzakelijk gebonden aan doel-publiek.
 
+Op Logisch niveau zijn we vooral geïnteresseerd in de algemene concepten: wat moet waar gebeuren. Naarmate we 'Fysieker' worden voegen we steeds meer technische details toe. Meestal is het meest Fysieke niveau dat we beschrijven een niveau waarmee een gemiddelde developer zonder al te veel nadenken de code zou kunnen uitwerken.
+
+Dus als je als developer je soms afvraagt 'waar is dat logische niveau eigenlijk voor?', dat kan best. Meestal ben je niet de doelgroep voor die stijl van denken. Op Logisch-componenten niveau (zie <<Components>>, maar in een notendop: uit welke grove delen bestaat dit systeem) willen we bijv. met een hoge-level manager nadenken hoeveel teams van developers überhaupt ingezet dienen te worden op een project. Als we daar diagrammen gaan maken met allerhande fancy interfaces en inheritance-hierarchieën dan wordt die manager alleen maar gefrustreerd. Niet relevant voor diens doeleinden.
+
+Op het standaard Fysieke niveau voelen we ons als developer thuis, want daar praten we over classes, interfaces, en allemaal ander leuk spul. Dat kan je in UML doen (middels bijv. een Component Diagram), of in tekst, of met stukjes voorbeeldcode in Java. Het model leeft in je gedachte, en je kiest de beste vorm om die gedachte over te brengen naar de andere developers.
+
+Logisch naar Fysiek is echter een schaal, en we kunnen 'Fysieker' worden dan normaal. Nog meer Fysiek is bijv. niet de broncode van je applicatie, maar een proces van die applicatie dat draait op een specifieke server. Dat zijn de klassieke 'waarom doet ie het op de ene pc wel, en op de andere niet??'-problemen. Nog fysieker dan dat is als bijv. een stuk hardware kapot is, dan krijg je echt raar applicatie-gedrag voor je kiezen. Dan ben je aan het nadenken over hoe jouw broncode zich gedraagt op die ene server, met dat ene kapotte RAM-simmetje, en of die misschien verantwoordelijk zou zijn voor dat ene gekke geval...
+
+Op die momenten ben je aan het nadenken over verschillende aspecten van je code. Om überhaupt te kunnen nadenken moet je in staat zijn om gedachten over je code te vormen. En die gedachten zijn modellenfootnote:[ En Software Architecture wil je helpen handige modellen te maken. In plaats van onhandige.].
+
 === Architecture Decision Records
 
-(TODO: uitwerken)
+(TODO: uitwerken, voorbeeld)
+
 ADRs zijn een wat modernere standaard om architecturele beslissingen vast te leggen en bij te houden. Het is een vrij light-weight standaard, wat fijn is omdat er dus niet ineens een heel groot document getyped hoeft te worden, maar ook een beetje lastig, omdat er dus ook niet echt een leidraad is wat je er nou mee moet.
 
 De simpelste lezing is dat het plain-text documenten (bijv. Markdown) documenten zijn in je repository, met een bepaalde structuur, die op een bepaalde manier naar elkaar linken.
