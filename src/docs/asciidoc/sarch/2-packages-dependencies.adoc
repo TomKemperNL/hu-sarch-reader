@@ -1,3 +1,37 @@
 == Packages & Dependencies
 
+Het is misschien onverwacht, maar een heel groot gedeelte van het werk van een Software Architect zit in het bijhouden en managen van dependencies. Een dependency is letterlijk iets waar je afhankelijk van bent: een ander stukje code dat je nodig hebt om je werk te doen. 
+
+De terminologie is een beetje slordig, we kunnen zowel zeggen dat we een dependency op dat stuk code hebben, maar ook dat dat stuk code een dependency is. De formele definitie van Software Architecture praat over de "Software Elements, Relations among them, and properties of both". Met het praten over dependencies praten we dus zowel over de 'elements', en over die 'relations'. Als we het daarnaast ook nog over de 'properties' hebben, dan hebben we het allemaal wel gehad.
+
+=== Waarom Dependencies
+
+Je hebt 't nodig.
+
+Het is zeer ongebruikelijk om een programma helemaal op eigen kracht te schrijven. Zelfs de String class is strict genomen onderdeel van de Standard Library in Java, je zou dan alleen de primitive (kleine letter) classes kunnen gebruiken, en alle andere zelf moeten maken.
+
+Maar er zijn zat andere dingen waar je aan kan denken:
+
+* Zonder een library als JavaFX is het een enorm werk om een knop op het scherm te tekenen. Dan zou je zelf alle OS-calls moeten schrijven om de juiste pixels te tekenen, click-functionaliteit te implementeren, etc.
+* Datum/tijd berekeningen kunnen erg tricky worden met schrikkeljaren, zomer/wintertijd etc. Dan is het fijn dat dingen als LocalDate en LocalDateTime bestaan.
+* Je kunt het zo gek niet bedenken, of er is wel een library voor
+
+=== Risicos van Dependencies
+
+* Leftpad
+* Log4Shell
+* ...
+
+=== Packages
+
+Het woord package is nogal overloaded. Een Java package is net iets anders dan een NPM package, en woorden als project of module hebben ook per programmeertaal een andere bijklank.
+
+Gelukkig zitten Java-packages en UML packages redelijk dicht bij elkaar. Een package in deze zin is louter een groepje classes (en andere 'inner' packages).
+
+=== Dependencies & Coupling
+
+
+
+==== Law of Demeter
+
 

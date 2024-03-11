@@ -27,7 +27,7 @@ The alternative to Good Design is always Bad Design. There is no such thing as N
 
 Als we geen Software Architecture-werkzaamheden uitvoeren betekent dat niet dat ons eindproduct geen architectuur zal hebben. 
 
-== Wat doet een Software Architect
+=== Wat doet een Software Architect
 
 De rol van Software Architect is vaak een vrij seniore rol in het team. Om een succesvolle architect te zijn moet je goed op de hoogte zijn van de technische werking van het systeem waar je aan werkt, maar ook de bedrijfscontext waarin het ingezet wordt.
 
@@ -37,7 +37,7 @@ Dit is een ervaring die veel developers delen wanneer ze van junior-niveau opkli
 
 Tot slot, als communiceren zo'n belangrijk onderdeel is van je taak. Dan moet je ook kunnen communiceren als je niet beschikbaar bent: oftewel je moet alles goed kunnen documenteren.
 
-== Software Architectuur Producten
+=== Software Architectuur Producten
 
 Het primaire product dat we ontwikkelen als Software Architect zijn modellen van de applicatie. Het is verleidelijk om bij het woord "model" gelijk aan plaatjes te denken, en in de praktijk noemen we de vele plaatjes in software-architecture documenten ook wel "modellen", maar strict genomen is dat ietwat misleidend. Een model is een mentaal construct. Het is een manier van denken over de applicatie. Een model leeft dus in je hoofd.
 
@@ -175,3 +175,6 @@ ADRs zijn een wat modernere standaard om architecturele beslissingen vast te leg
 De simpelste lezing is dat het plain-text documenten (bijv. Markdown) documenten zijn in je repository, met een bepaalde structuur, die op een bepaalde manier naar elkaar linken.
 
 Zie bijv https://github.com/npryce/adr-tools[ADR Tools] voor een vrij breed gebruikte standaard om ze aan te maken.
+
+
+
