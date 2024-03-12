@@ -16,6 +16,43 @@ Een hele eenvoudige manier om die encapsulatie te bewerkstelligen is om als de f
 
 De aanwezigheid van een Facade is niet verplicht voor een component, de essentie is de duidelijke scheiding tussen binnen, en buitenkant. In Java kun je dat bewerkstelligen door de classes in de 'interface' public te maken, en de overige classes package-private (door niets, ook geen private of protected, voor de class te zetten). Een andere, modernere manier om components in Java te maken vind je in het Java Module System (wat ook een verwarrende naam is, omdat module zoveel verschillende dingen kan betekenen). Met het Java Module System (ook wel Jigsaw) genoemd, kan je per Java .jar aangeven welke classes van buitenaf gebruikt mogen worden, en welke niet. JavaFX maakt hier vrij enthousiast gebruik van.
 
+=== Logisch vs. Fysiek
+
+Op logisch niveau zijn componenten één van de meest intuïtieve manieren om je applicatie onder te verdelen. Op logisch niveau laten we veel detail weg, en focussen we puur op welke grove groepen functionaliteit we in de applicatie willen realiseren. Een simpel winkelvoorbeeld kan bijv. bestaan uit:
+
+[plantuml,"logical-components",svg]
+.Voorbeeld logisch componentenmodel
+----
+skinparam classAttributeIconSize 0
+skinparam packageStyle folder
+
+package verkoop {
+    package bezorging #ffffff {}
+}
+
+package assortiment { 
+    package aanbiedingen #ffffff {}   
+}
+
+package voorraad #ffffff {
+}
+
+verkoop ..> assortiment
+voorraad ..> assortiment
+verkoop ..> voorraad
+----
+
+Met een diagram als dit kun je dan bijv. dubbelchecken of je alle belangrijke functionaliteit onderverdeeld hebt, of kun je beginnen met het werk verdelen tussen projectleden op school, of teams van developers in een bedrijf. Het is prettig als je geen circulaire dependencies tussen je componenten hebt, dat geeft rust in je ontwerp. Als er geen cirkels zijn, dan is er ergens een stabiel punt (in dit voorbeeld 'assortiment') wat op een gegeven moment echt 'af genoeg' kan zijn; en dat plant een stuk makkelijker. 
+
+Helaas is dit niet altijd mogelijk, stel het is bijv. heel erg belangrijk dat afhankelijk van de bezorgingen extra producten in bepaalde regios in de aanbieding komen ("want we gingen toch al met een vrachtwagen vol die kant op..."), dan is er waarschijnlijk plotseling een Dependency van aanbieding naar bezorging. De aanbiedingen component moet immers aan de bezorging component kunnen vragen waar er allemaal bezorgd gaat worden. Dan zullen de teams van die twee onderdelen constant bij elkaar een vinger aan de pols moeten houden of ze elkaar niet per ongeluk in de weg zitten. Het kan immers voorkomen dat één van de teams denkt alles op orde te hebben, maar helaas, een last-minute change van de ander gooit roet in het eten, en een iteratie later vice-versa. Een alternatieve optie is om te gaan uitzoeken of de hele 'aanbiedingen'-module niet beter thuis hoort in 'verkoop' voor deze applicatie. Puur op basis van intuïtie zou zo'n module zowel in assortiment of in verkoop prima thuis horen, maar op basis van de componenten-structuur hebben we nu een mogelijke concrete reden om 'm te verplaatsen. Een reden om dat niet te doen zou bijv. zijn als het teveel werk wordt om bij te houden voor het team van 'Verkoop', of omdat de business-expertise over aanbiedingen allemaal in dit specifieke bedrijf aanwezig zijn bij de mensen van 'assortiment'.
+
+Kortom, er is niet een objectief goed of fout voor 'het algemene geval'. Er zijn principes, zoals het idealiter vermijden van circulaire component-dependencies, en die zorgen er voor dat je bepaalde opties als architect wel, of juist niet, overweegt.
+
+Op fysiek niveau schakelen we over van planning naar daadwerkelijke implementatie in code. Dan moeten we explici
+
+
+
+
 === Coupling en Cohesion
 
 Een ander perspectief op het bouwen van classes, en wederom gaat die theorie 1-1 mee naar components, is om te kijken naar de Coupling en Cohesion eigenschappen. Coupling hebben we al enigszins besproken in <<coupling>>. Binnen de context van componenten is één van de belangrijkste punten om op te letten is dat je heel erg oppast met coupling aangaan met andere componenten. Hoe meer de classes in jouw component een andere component nodig hebben, hoe moeilijker het gaat worden om jouw component te hergebruiken. Helemaal opvallend is als onderdelen van jouw component _meer_ dependencies buiten de component dan binnen de component hebben, dan zit die class waarschijnlijk op de verkeerde plek.
@@ -23,8 +60,5 @@ Een ander perspectief op het bouwen van classes, en wederom gaat die theorie 1-1
 Een ander onderdeel is 'cohesie'. Als er classes in je component zitten die niet gebruikt worden door de rest, dan is dat vreemd. Waarom zitten ze dan in je component? Dan is het beter om ze eruit te halen, want dan hebben evt. dependencies op die class niet direct een dependency op de hele component! Vanuit dezelfde gedachte is het ook goed om te kijken of je geen 'eilandjes' in je componenten hebt zitten. Groepjes classes die elkaar wel nodig hebben, maar tussen de groepjes is geen samenwerking. In dat soort gevallen (en dat gebeurt regelmatig) heb je per ongeluk gewoon meerdere componenten in één gepropt. Het nadeel is wederom dat wanneer iemand van buiten één van die groepjes nodig heeft, dat je direct een koppeling op de hele component hebt.
 
 Kort door de bocht zegt Cohesion dus dat je classes (en interfaces, en abstract classes etc.) elkaar 'voldoende' nodig moeten hebben. Want anders gaan ze maar mooi in hun eigen component wonen.
-
-=== Logisch vs. Fysiek
-
 
 === Trucs met componentenontwerp

@@ -3,35 +3,37 @@
 
 Het is misschien onverwacht, maar een heel groot gedeelte van het werk van een Software Architect zit in het bijhouden en managen van dependencies. Een dependency is letterlijk iets waar je afhankelijk van bent: een ander stukje code dat je nodig hebt om je werk te doen. 
 
-De terminologie is een beetje slordig, we kunnen zowel zeggen dat we een dependency op dat stuk code hebben, maar ook dat dat stuk code een dependency is. De formele definitie van Software Architecture praat over de "Software Elements, Relations among them, and properties of both". Met het praten over dependencies praten we dus zowel over de 'elements', en over die 'relations'. Als we het daarnaast ook nog over de 'properties' hebben, dan hebben we het allemaal wel gehad.
-
-[quote, Documenting Software Architectures (2010), herhaling]
-"The software architecture of a computing system is the set of structures needed to reason about the system, which comprise software elements, relations among them, and properties of both."
-
+De terminologie is een beetje slordig, we kunnen zowel zeggen dat we een dependency op dat stuk code hebben, maar ook dat dat stuk code een dependency is. De formele definitie van Software Architecture (zie <<definition>>) praat over de "Software Elements, Relations among them, and properties of both". Met het praten over dependencies praten we dus zowel over de 'elements', en over die 'relations'. Als we het daarnaast ook nog over de 'properties' hebben, dan hebben we het allemaal wel gehad. Kortom het moge duidelijk zijn hoe centraal de notie van dependencies zijn binnen het denken over Software Architecture.
 
 === Waarom Dependencies
 
-Je hebt 't nodig.
+Je hebt 't nodig. Het is zeer ongebruikelijk om een modern programma helemaal op eigen kracht te schrijven. Zelfs de String class is strict genomen onderdeel van de Standard Library in Java, je zou dan alleen de primitive (kleine letter) classes kunnen gebruiken, en alle andere zelf moeten maken. Als Software Developers staan we elke dag op de schouders van reuzen.
 
-Het is zeer ongebruikelijk om een programma helemaal op eigen kracht te schrijven. Zelfs de String class is strict genomen onderdeel van de Standard Library in Java, je zou dan alleen de primitive (kleine letter) classes kunnen gebruiken, en alle andere zelf moeten maken.
-
-Maar er zijn zat andere dingen waar je aan kan denken:
+Maar naast Strings er zijn zat andere dingen waar je aan kan denken:
 
 * Zonder een library als JavaFX is het een enorm werk om een knop op het scherm te tekenen. Dan zou je zelf alle OS-calls moeten schrijven om de juiste pixels te tekenen, click-functionaliteit te implementeren, etc.
 * Datum/tijd berekeningen kunnen erg tricky worden met schrikkeljaren, zomer/wintertijd etc. Dan is het fijn dat dingen als LocalDate en LocalDateTime bestaan.
-* Je kunt het zo gek niet bedenken, of er is wel een library voor
+* Denk aan al je netwerkprotocollen, HTTP, TCP, IP, Ethernet, etc. Zou je allemaal zelf moeten uitschrijven. Uiteraard moet je ook de Stream class die binary kan praten dan eerst ook nog 'even' maken.
+* Je kunt het zo gek niet bedenken, of er is wel een library voor.
 
 === Risicos van Dependencies
 
-* Leftpad
-* Log4Shell
-* ...
+Het gebruiken van dependencies is echter niet zonder risicos. Neem bijv. het updaten van je dependencies, meestal gaat dat goed, maar soms maken de makers van een library ook een foutje (of gaan ze bewust een andere kant op), en zit jij als applicatie-ontwikkelaar ineens met een probleem. Een probleem waar je totaal geen tijd voor ingeplant had.
+
+Een aantal voorbeelden:
+
+* Leftpad. Er was eens een klein functietje (7 regels javascript...), het ging ongeveer zo: _leftpad('hallo', 7, '-') => '--hallo'_. Een functietje die elke developer ook eigenlijk wel zelf had kunnen schrijven, maar ach, 'npm install leftpad' is minder typewerk. En dit functietje werd gebruikt in een heleboel verschillende Javascript libraries, met name eentje genaamd 'Babel'. Babel is een (nog steeds) prachtige library die er voor zorgt dat je de meest moderne javascript kan typen, maar het gewoon in een oude crappy browser kan draaien. Mooi spul, en bijna elk groot front-end framework werkte samen met Babel. Op een mooie dag besloot echter de developer van Leftpad z'n package van NPM af te halen! Gevolg: 'npm install leftpad' deed het niet meer. Maar 'npm install babel' ook niet meer, en 'npm install angular/vue/react/etc' ook allemaal niet meer! Kortom bijna elke CI-server van bijna elk bedrijf had een hele slechte dag ineens. Launches gingen mis, updates werden uitgesteld, en natuurlijk heel veel verwarrende rode lampjes op allerlei normaal-zo-rustige CI-servers. cite:[leftpad]
+
+* Log4Shell. In 2021 werd ontdekt dat je met een héle populaire Logging library voor Java (Log4J), een hele gevaarlijke truc kon uithalen. Door een bepaald soort regel te laten loggen, kon je de server een JAR op een URL naar jouw keuze laten downloaden en uitvoeren. Kortom, arbitraire remote-code executie op een server. Het wordt niet heel veel linker dan dat. Details wat voor impact dit heeft gehad op bijv. de Nederlandse Overheid kun je lezen https://github.com/NCSC-NL/log4shell[op Github].
+//TODO: meer leuke voorbeelden zoeken
 
 === Packages
 
 Het woord package is nogal overloaded. Een Java package is net iets anders dan een NPM package, en woorden als project of module hebben ook per programmeertaal een andere bijklank.
 
-Gelukkig zitten Java-packages en UML packages redelijk dicht bij elkaar. Een package in deze zin is louter een groepje classes (en andere 'inner' packages).
+Gelukkig zitten Java-packages en UML packages redelijk dicht bij elkaar. Een package in deze zin is louter een groepje classes (en andere 'inner' packages). Het is vaak heel veel gedoe om op een te-precies niveau over Dependencies te praten (dan moet je elke link tussen twee classes noemen). Zodoende is het vaak voldoende om iets grover over afhankelijkheden te praten. Strict genomen zeggen we dat een package A afhankelijk van B is, als er minstens één class uit A, afhankelijk is op minstens één class uit B.
+
+Dependencies zijn zeg maar 'besmettelijk'.
 
 [#coupling]
 === Dependencies & Coupling
@@ -44,6 +46,29 @@ Coupling is dus een schaal, je kunt 'een beetje' gecoupled zijn, of heel erg. Af
 
 ==== Law of Demeter
 
+Een mooi voorbeeld van hoe je in moderne IDEs vrij snel een rommeltje kan maken van je dependencies zie je in onderstaande regel code:
+
+[source, java]
+.Een zogeheten train-wreck, doe dit niet.
+----
+//In een class 'Checkout':
+double vatRateForCustomer = order.getCustomers().getPrimaryAddress().getCity().getLaws().getVATRate();
+----
+
+Het grote probleem is dat deze regel code echt heel leuk voelt om te typen! Je 'dot' van het ene object naar het volgende, en eindigt exact met de informatie die je nodig hebt. Voelt goed, als een soort moderne code-cowboy. Het probleem is dat deze regel enorm veel coupling introduceert: de class Checkout gaat kapot als er op elke plek in die keten iets verandert. Als Order mogelijk z'n customer anders returnt kan checkout stuk, als Customer z'n adressen anders gaat opslaan, als Address z'n city anders gaat behandelen, als City niet meer een collectie Laws heeft, en als die Laws niet meer van VAT (BTW) percentages weten... Kortom, allemaal coupling, voor zeer weinig practisch nut. Wat we willen zien is:
+
+[source, java]
+.Demeter, Griekse graangodin, kan weer lachen.
+----
+//In een class 'Checkout':
+double vatRateForCustomer = order.getVATRate();
+----
+
+Heel flauw gezegd is dat we op één regel vaak maar één (of soms twee...) 'dots' willen zien. We waarderen en respecteren de objecten waarmee we moeten samenwerken teveel om de hele tijd in hun ingewanden te gaan zitten wroeten. Vind niemand leuk, ook objecten niet.
+
+Deze regel noemt men de 'Law of Demeter', naar de Griekse graan godin. Het verhaal er achter is dat deze wet bedacht werd tijdens het ontwikkelen van een support-tooltje voor een project genaamd Zeus (Griekse oppergod), en dat support-tooltje heeft men met een knipoog Demeter genoemd. Tijdens het maken van dat project kwam men erachter dat deze regel wel een goed idee was cite:[demeter].
+
+=== Tot slot
 
 Dependencies (en de daaruit voortvloeiende coupling) zijn de oorzaak van een overvloed van onze problemen. Gelukkig is er een duidelijke oplossing, de "Fundamental theorem of software engineering":
 
