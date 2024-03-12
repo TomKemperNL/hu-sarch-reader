@@ -1,3 +1,4 @@
+[#dependencies]
 == Packages & Dependencies
 
 Het is misschien onverwacht, maar een heel groot gedeelte van het werk van een Software Architect zit in het bijhouden en managen van dependencies. Een dependency is letterlijk iets waar je afhankelijk van bent: een ander stukje code dat je nodig hebt om je werk te doen. 
@@ -32,9 +33,14 @@ Het woord package is nogal overloaded. Een Java package is net iets anders dan e
 
 Gelukkig zitten Java-packages en UML packages redelijk dicht bij elkaar. Een package in deze zin is louter een groepje classes (en andere 'inner' packages).
 
+[#coupling]
 === Dependencies & Coupling
 
+Met Coupling bedoelen we een verbinding tussen verschillende groepen code (zoals classes). Als een wijziging in stukje code B tot een mogelijke wijziging in code A zou kunnen leiden (genoeg dat je het even moet dubbelchecken of het wel goed gaat), dan is A gekoppeld aan B.
 
+In de meeste gevallen impliceert een Dependency automatisch dat er Coupling tussen stukken code is (want als de dependency stuk gaat, dan moet je aan het werk). De vergelijking is echter net-niet één-op-één. Je kunt bijv. een class schrijven die al je data netjes naar een bestand schrijft met de java.nio.file.Files class. Je applicatie is dan nog wel Dependent java.nio.file.Files, en is nog wel een beetje gecoupled aan java.nio.file.Files, maar een heel stuk minder als wanneer je in twintig verschillende classes in je code-base met het handje met java.nio.file.Files aan het manipuleren bent.
+
+Coupling is dus een schaal, je kunt 'een beetje' gecoupled zijn, of heel erg. Afhankelijk hoe groot evt. problemen in je applicatie door de rest van je code verspreiden. Er zijn veel soorten coupling, in deze cursus focussen we vooral op Type-level-coupling (dus als we code B wijzigen, kunnen we code A ineens niet meer compilen), maar er zijn vele soorten (bijv. qua timing, als we er vanuit gaan dat een bepaalde methode 'vast wel binnen een seconde klaar is' en daar met een Thread.sleep omheen werken). Zie voor meer bijv. de website https://connascence.io/[Connasence.io]footnote:[Coupling & Connascence zijn nagenoeg synoniemen. Connascence is een iets nieuwere term die probeert 'Coupling en meer' te zijn, maar het is me niet helemaal duidelijk waarom al dat meer niet ook gewoon coupling is...]
 
 ==== Law of Demeter
 

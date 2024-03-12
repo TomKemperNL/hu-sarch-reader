@@ -28,7 +28,7 @@ The alternative to Good Design is always Bad Design. There is no such thing as N
 
 Als we geen Software Architecture-werkzaamheden uitvoeren betekent dat niet dat ons eindproduct geen architectuur zal hebben. 
 
-=== Wat doet een Software Architect
+=== Wat doet een Software Architect?
 
 De rol van Software Architect is vaak een vrij seniore rol in het team. Om een succesvolle architect te zijn moet je goed op de hoogte zijn van de technische werking van het systeem waar je aan werkt, maar ook de bedrijfscontext waarin het ingezet wordt.
 

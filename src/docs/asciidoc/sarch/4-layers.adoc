@@ -1,3 +1,15 @@
 == Layers
 
+=== Regels voor lagen
+
 === Het standaard 4-lagen model
+
+=== Non-standaard lagenmodellen
+
+=== Logisch vs. Fysiek
+
+//Deze zie ik niet zo goed...
+
+=== Trucs met lagenontwerp
+
+

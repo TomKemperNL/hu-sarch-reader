@@ -1,1 +1,30 @@
 == Components
+
+Component-based development is een oude techniek in Software Architectuur. In de basis kennen we de techniek al uit Object-Oriented Programming: onze code-base wordt makkelijker te begrijpen, en te onderhouden, als we er voor zorgen dat je niet ten aller tijden alle details in de gaten hoeft te houden. In OOP regelen we dit door een duidelijk onderscheid te maken tussen de public en private members (attributen en methoden) in een class. Zo kunnen we er voor zorgen dat een object van buitenaf 'lekker makkelijk' in het gebruik is, ongeacht hoe ingewikkeld het aan de binnenkant blijkt te zijnfootnote:[Blader bijv. eens door de sourcecode van de java.util.ArrayList<> class. In IntelliJ kun je gewoon rechtsklikken op de class en 'Go to Implementation' aanklikken.].
+
+Componenten passen precies ditzelfde idee toe, maar dan een leveltje hoger. Een component is een groep classes (en interfaces, en enums, etc.), waarvan sommige classes bedoeld zijn voor publiek gebruik, die je van buiten de component kan aanroepen, maar ook dat er classes zijn waarbij dat niet de bedoeling is, de private binnenkant. De classes die bedoeld zijn voor publieke consumptie worden (nogal verwarrend) ook wel de 'interface' of het 'contract' van de component genoemd. Deze notie van een interface bestaat ook in UML, dus we hebben de vreemde situatie dat een UML-interface uit Java-interfaces en classes kan bestaan, en een java-interface bestaat dan juist weer alleen uit methods. Uiteindelijk gaat het dus om de betekenis van het woord 'interface' als 'buitenste laagje'.
+
+Deze truuk van information-hiding kan je uiteraard ook op hoger liggende niveaus toepassen; publieke en private componenten binnen een service, publieke en private services binnen een systeem, publieke en private systemen binnen een landschap, etc. (al lopen we wel tegen de grenzen van de standaard-terminologie aan).
+
+Kortom het gaat om goede encapsulatie, en dat geeft componenten een aantal prettige architecturele eigenschappen:
+
+* Een goede component is autonoom. Een component kan in z'n eentje kan iets nuttigs, of voegt in elk geval iets wezenlijks toe aan het grotere geheel. 
+* Een goede component is modulair. Ze hebben een duidelijk contract, en kunnen gecombineerd en hergebruikt worden om grotere problemen op te lossen.
+* Een goede component is vervangbaar. Omdat de buitenkant (de interface) van de component helder gedefiniëerd is, kan iemand anders relatief makkelijk een eigen versie maken.
+
+Een hele eenvoudige manier om die encapsulatie te bewerkstelligen is om als de functionaliteit van de component af is, één class aan te maken die als aanspreekpunt voor de hele component dient. Die class noemen we dan een Facade (Faccia is Italiaans voor gezicht, façade is Frans voor voorhoofd). Uiteraard hebben we bij <<dependencies>> geleerd dat je in dit soort gevallen even moet oppassen, want als iemand een Dependency neemt op de Facade, dan neem je ook een Dependency op alle parameters en return-types in publieke methodes. Mocht daar iets tussen zitten dat je liever niet blootstelt, dan is het een goed idee om een speciaal 'alleen-lezen' versie van dat objectje te maken, puur ter uitwisseling van gegevens: een DTO (Data-Transfer-Object).
+
+De aanwezigheid van een Facade is niet verplicht voor een component, de essentie is de duidelijke scheiding tussen binnen, en buitenkant. In Java kun je dat bewerkstelligen door de classes in de 'interface' public te maken, en de overige classes package-private (door niets, ook geen private of protected, voor de class te zetten). Een andere, modernere manier om components in Java te maken vind je in het Java Module System (wat ook een verwarrende naam is, omdat module zoveel verschillende dingen kan betekenen). Met het Java Module System (ook wel Jigsaw) genoemd, kan je per Java .jar aangeven welke classes van buitenaf gebruikt mogen worden, en welke niet. JavaFX maakt hier vrij enthousiast gebruik van.
+
+=== Coupling en Cohesion
+
+Een ander perspectief op het bouwen van classes, en wederom gaat die theorie 1-1 mee naar components, is om te kijken naar de Coupling en Cohesion eigenschappen. Coupling hebben we al enigszins besproken in <<coupling>>. Binnen de context van componenten is één van de belangrijkste punten om op te letten is dat je heel erg oppast met coupling aangaan met andere componenten. Hoe meer de classes in jouw component een andere component nodig hebben, hoe moeilijker het gaat worden om jouw component te hergebruiken. Helemaal opvallend is als onderdelen van jouw component _meer_ dependencies buiten de component dan binnen de component hebben, dan zit die class waarschijnlijk op de verkeerde plek.
+
+Een ander onderdeel is 'cohesie'. Als er classes in je component zitten die niet gebruikt worden door de rest, dan is dat vreemd. Waarom zitten ze dan in je component? Dan is het beter om ze eruit te halen, want dan hebben evt. dependencies op die class niet direct een dependency op de hele component! Vanuit dezelfde gedachte is het ook goed om te kijken of je geen 'eilandjes' in je componenten hebt zitten. Groepjes classes die elkaar wel nodig hebben, maar tussen de groepjes is geen samenwerking. In dat soort gevallen (en dat gebeurt regelmatig) heb je per ongeluk gewoon meerdere componenten in één gepropt. Het nadeel is wederom dat wanneer iemand van buiten één van die groepjes nodig heeft, dat je direct een koppeling op de hele component hebt.
+
+Kort door de bocht zegt Cohesion dus dat je classes (en interfaces, en abstract classes etc.) elkaar 'voldoende' nodig moeten hebben. Want anders gaan ze maar mooi in hun eigen component wonen.
+
+=== Logisch vs. Fysiek
+
+
+=== Trucs met componentenontwerp
