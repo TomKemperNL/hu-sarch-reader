@@ -4,6 +4,10 @@ Het is misschien onverwacht, maar een heel groot gedeelte van het werk van een S
 
 De terminologie is een beetje slordig, we kunnen zowel zeggen dat we een dependency op dat stuk code hebben, maar ook dat dat stuk code een dependency is. De formele definitie van Software Architecture praat over de "Software Elements, Relations among them, and properties of both". Met het praten over dependencies praten we dus zowel over de 'elements', en over die 'relations'. Als we het daarnaast ook nog over de 'properties' hebben, dan hebben we het allemaal wel gehad.
 
+[quote, Documenting Software Architectures (2010), herhaling]
+"The software architecture of a computing system is the set of structures needed to reason about the system, which comprise software elements, relations among them, and properties of both."
+
+
 === Waarom Dependencies
 
 Je hebt 't nodig.
@@ -33,5 +37,13 @@ Gelukkig zitten Java-packages en UML packages redelijk dicht bij elkaar. Een pac
 
 
 ==== Law of Demeter
+
+
+Dependencies (en de daaruit voortvloeiende coupling) zijn de oorzaak van een overvloed van onze problemen. Gelukkig is er een duidelijke oplossing, de "Fundamental theorem of software engineering":
+
+[quote, David Wheeler (????)]
+"We can solve any problem by introducing an extra level of indirection."
+
+En de komende hoofdstukken kijken we naar verschillende vormen die zo'n level of indirection kan aannemen.
 
 

@@ -4,6 +4,7 @@ Meestal beginnen we een vak met een droge definitie waar het allemaal om zal gaa
 
 Laten we dat nu ook doen, volgens cite:[documenting_software_architectures]:
 
+[#definition]
 [quote, Documenting Software Architectures (2010)]
 "The software architecture of a computing system is the set of structures needed to reason about the system, which comprise software elements, relations among them, and properties of both."
 
@@ -154,11 +155,9 @@ De Deployment View gaat dan juist in op hoe het systeem gedeployed moet worden. 
 
 Een veel terugkomend onderscheid in deze cursus is het onderscheid tussen een Logisch niveau van modelleren, en een Fysiek niveau. Dit correspondeert grofweg met het Logische en het Development perspectief in Kruchten, maar is toch weer net ietsje anders.
 
-In plaats van een perspectief is dit onderscheid bedoeld als schaal van detail, niet noodzakelijk gebonden aan doel-publiek.
+In plaats van een perspectief is dit onderscheid bedoeld als schaal van detail, niet noodzakelijk gebonden aan doel-publiek. Op Logisch niveau zijn we vooral geïnteresseerd in de algemene concepten: wat moet waar gebeuren. Naarmate we 'Fysieker' worden voegen we steeds meer technische details toe. Meestal is het meest Fysieke niveau dat we beschrijven een niveau waarmee een gemiddelde developer zonder al te veel extra nadenken de code zou kunnen uitwerken.
 
-Op Logisch niveau zijn we vooral geïnteresseerd in de algemene concepten: wat moet waar gebeuren. Naarmate we 'Fysieker' worden voegen we steeds meer technische details toe. Meestal is het meest Fysieke niveau dat we beschrijven een niveau waarmee een gemiddelde developer zonder al te veel nadenken de code zou kunnen uitwerken.
-
-Dus als je als developer je soms afvraagt 'waar is dat logische niveau eigenlijk voor?', dat kan best. Meestal ben je niet de doelgroep voor die stijl van denken. Op Logisch-componenten niveau (zie <<Components>>, maar in een notendop: uit welke grove delen bestaat dit systeem) willen we bijv. met een hoge-level manager nadenken hoeveel teams van developers überhaupt ingezet dienen te worden op een project. Als we daar diagrammen gaan maken met allerhande fancy interfaces en inheritance-hierarchieën dan wordt die manager alleen maar gefrustreerd. Niet relevant voor diens doeleinden.
+Dus als je als developer je soms afvraagt 'waar is dat logische niveau eigenlijk voor?', dat kan best. Meestal ben je niet de doelgroep voor die stijl van denken, maar stel je bent bijv. net nieuw bij een bedrijf, dan is het prettig om eerst een algemeen plaatje te vormen. Op Logisch-componenten niveau (zie <<Components>>, maar in een notendop: uit welke grove delen bestaat dit systeem) willen we bijv. met business expert dubbelchecken of we alle verwachte functionaliteit in zicht hebben, of met een hoge-level manager nadenken hoe de verschillende teams van developers überhaupt ingezet dienen te worden op een project. Als we daar diagrammen gaan maken met allerhande fancy interfaces en inheritance-hierarchieën dan worden die expert en die manager alleen maar gefrustreerd. Niet relevant voor hun doeleinden.
 
 Op het standaard Fysieke niveau voelen we ons als developer thuis, want daar praten we over classes, interfaces, en allemaal ander leuk spul. Dat kan je in UML doen (middels bijv. een Component Diagram), of in tekst, of met stukjes voorbeeldcode in Java. Het model leeft in je gedachte, en je kiest de beste vorm om die gedachte over te brengen naar de andere developers.
 

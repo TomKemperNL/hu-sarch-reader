@@ -1,1 +1,112 @@
-== Reconstruction
+== Architecture Reconstruction
+
+Zoals eerder besproken werken we als Software Architect vaak met modellen van code: oftewel, een mentaal plaatje waarin we op een bepaalde manier naar de code kijken. De Software Architectuur is vervolgens een overzicht hoe de 'grote delen' en de 'pijltjes ertussen' samenhangen (zie <<definition>>), zodat we makkelijk die verschillende perspectieven kunnen construeren. Software Architecture Reconstruction is de subdiscipline waarin we proberen uit te vinden wat de bedoelde architectuur van een bepaald stuk bestaande code geweest zal zijn.
+
+In een ideale wereld is de code die je als Architect aantreft in een project van uitmuntende kwaliteit en duidelijkheid, en is deze code voorzien van uitstekende documentatie die de slimme gedachten, toekomstplannen en wijze lessen die in de code verscholen zitten duidelijk aangeeft en toelicht. Deze ideale wereld is uiteraard niet de onze. In werkelijkheid is er vaak ooit een mooi begin gemaakt, is er vervolgens met veel haast een paar jaar duct-tape op de codebase geplakt, en was de documentatie ook voor de eerste versie al out-of-date, en daarmee eerder misleidend dan behulpzaam. Software Development is vaak ook een lerend proces, dus je zult in de code ook vaak verschillende fases van het ontwikkelteam terugvinden, delen waarin ze nog echt aan het uitvinden waren hoe het domein werkte, hoe ze als team moesten samenwerken, en hoe de programmeertaal/frameworks in kwestie werken, maar ook latere delen waar zaken al wat meer uitgeklonken zijn.
+
+De eerste indruk van elke Architect of Developer in deze situatie is: "WTF, dit moet allemaal opnieuw."
+
+image::sarch/images/5-reconstruction-wtfm.jpg["Programmeurs die code van hun voorgangers vervloeken. Slechte code krijgt veel WTFs, maar zelfs goede code krijgt er enkele."]
+
+Dus waarom zouden we überhaupt de moeite doen om ons met reconstructie bezig te houden?
+
+=== Gevaarlijk alternatief: De grote Rewrite
+
+Één van de meest voorkomende fouten in strategische (min-of-meer: lange termijn) beslissingen op software systemen is de enorme verleiding om in situaties zoals bovenstaande aan 'de grote rewrite' te beginnen cite:[spolsky_rewrite]. Het oude systeem is een rommeltje, dat vindt iedereen, dus het idee dat dit overnieuw moet, maar dan _zonder al die fouten_, is heel verleidelijk. Vaak plakken we er dan een vrolijk '2.0' labeltje op, en alles voelt fris, fruitig, en nieuw. We tuigen een nieuw team op, met één of twee van de beste developers van het oude product (maar de meeste niet, natuurlijk, zij hebben immers die rommel gemaakt!), en die zijn maar wat blij daar weg te zijn. Dit keer gaat alles vast beter en meestal gaan de eerste paar releases van dit 2.0 systeem ook heel soepel, en is het optimisme hoog. 
+
+Het is makkelijk om nu te vergeten dat versie 1.0 nog in productie staat, en geld voor je bedrijf aan het verdienen is (als het geen geld verdiende zou het ook de moeite van het herschrijven niet waard zijn). Dit product staat natuurlijk niet stil, er worden nieuwe functionele requirements in verwerkt, en de allerergste problemen worden wel degelijk aangepakt. Dus enkele maanden later is het 2.0 systeem op de plek waar het 1.0 systeem *was*. Dit is een probleem waar de Griekse filosoof Zeno al 500 v.Chr. mee bezig wasfootnote:[Achilles en de schildpad. Het is schijnbaar onmogelijk voor Achilles om ooit de schildpad in te halen, want hij arriveert elke keer waar de schildpad een moment eerder _was_. Dit is één van vele van Zenos paradoxen]!
+
+Nu begint vaak de ellende, want de grote, duidelijke features voor het 2.0 systeem zijn geïmplementeerd, maar nu moeten de details geregeld worden. Die vreemde, rare gevallen waar je klanten ondertussen aan gewend zijn geraakt, en zelfs op rekenen. En uiteraard zijn de extra features in de tussentijd heel redelijk te implementeren op 1.0, maar waarschijnlijk een groot probleem om ook netjes in 2.0 uit te voeren. En al die data in het 1.0 systeem? Tsja, die is best waardevol. Zou zonde zijn om weg te gooien, dus kun je dat niet migreren? En elke, steeds moeilijker wordende, release van het 2.0 systeem gaat ietsje langzamer, terwijl het 1.0 systeem gewoon doorkachelt en nieuwe features en problemen aantrekt.
+
+Er zijn uiteraard oplossingen te bedenken voor al deze problemen, maar dit verhaal zal voor veel oudere developers herkenbaar zijn, dus de moeite waard om voor een nieuwe generatie als waarschuwing neer te zetten.
+
+
+----
+Software Architecture Reconstruction, oftewel het uitvinden wat de bedoeling was achter de (meestal enorme rommel van) code die je nu voor je neus hebt, is een eerste (en belangrijk) onderdeel van wat men noemt 'Brownfield Software Engineering'. Dit houdt in dat we ons vak uitoefenen in een situatie waar al een hele boel bestaande software (van meestal 'bruine' kwaliteit...) aanwezig is. Het tegenovergestelde noemt met een 'Greenfield', dan is er nog geen bestaande software om rekening mee te houden, en mag je de allereerste regels code zelf schrijven.
+
+De meeste developers willen liever een 'Greenfield' dan een 'Brownfield'. Persoonlijk vind ik 'Brownfield' vele malen leuker en interessanter. Bij Greenfield ben je vooral technisch bezig, maar bij Brownfield ga je als ontdekkingsreiziger een oude codebase in. Je leert langzaam verschillende 'personages' (de oude developers) kennen, en je leert en-passant wat over hoe het bedrijf toen functioneerde (dat zie je altijd terug in de code...). Je bent bezig met techniek, taal, sociale verhoudingen, en ondertussen interessante puzzels aan het oplossen.
+
+Het enige is dat het eindresultaat waarschijnlijk minder spectaculair zal zijn. Als Brownfield developer moet je gericht zijn op je eigen acties, en je eigen kleine effecten. Je bent geen supergaaf product aan het maken, maar je bent hoge-kwaliteit acties aan het ondernemen in een bredere context. Je bent vooral bezig met je eigen professionaliteit. Als je adem lang genoeg is komen daar mooie dingen uit, maar je moet de voldoening echt uit andere dingen zoeken dan bij een Greenfield.
+
+Probeer die andere blik eens uit, misschien ligt het vakgebied jou ook wel?
+-Tom
+----
+
+//Ik kan hier geen redelijke wetenschappelijke papers over vinden, en dat irriteert me. Het is een standaard stukje industrie-wijsheid... maar nu komt het niet heel overtuigend over.
+
+=== Code Analyse
+
+Een wenselijk alternatief is dus om de controle over het bestaande systeem te herpakken. Een eerste stap voor dit proces is om een overzicht te krijgen van wat er is. Het reconstrueren van een architectuur uit bestaande code is echter niet heel vanzelfsprekend:
+
+* De architectuur is vaak niet (of out-of-date) gedocumenteerd.
+* Architectuur heeft de neiging te _driften_. Over tijd stapelen kleine foutjes zich nagenoeg ongezien op.
+* Architectuur is vaak niet expliciet te zien in code. Soms geeft een class of package-naam een hele goede hint (een XYZController in een Presentation package zal wel UI-layer zijn), maar er is niets in de programmeertaal die dit verplicht.
+
+Let op dat in grotere systemen het vaak niet redelijk is om 'de hele architectuur' eerst te begrijpen (dus een nieuw model te vormen), en vervolgens beter te documenteren. Vaak zul je tevreden moeten zijn om stukje bij beetje het oudere systeem te leren kennen, en oude conclusies te herzien. Welk stuk je kiest is uiteraard afhankelijk van wat je met het oude systeem wil bereiken.
+
+Er zijn grofweg drie manieren om deze structuren te reconstrueren cite:[microservices_reconstruction]:
+
+* Statische analyse: vanuit de broncode gebruiken we automatische analyse om (delen van) de structuur te reconstrueren
+* Dynamisch: terwijl het systeem draait nemen we allerlei gegevens op (via bijv. logging, of complexere agents als debuggers), en uit die gegevens reconstrueren we vervolgens de structuur van de applicatie
+* Handmatig: hoge-kwaliteit automatische architectuur analyse is nog steeds grotendeels een droom. Grote stukken zullen we dus moeten reconstrueren door zelf de code te lezen, of door resultaten van automatische tools kritisch verder te verwerken.
+
+Statische analyse is de tak waar het meeste onderzoek naar gedaan is, en waar dit vak zich het meest mee bezig houdt. Dynamische analyse valt tegenwoordig vaak onder de bredere vlag van _Observability_, specifiek gezien _tracing_ footnote:[Zie bijv. https://opentelemetry.io/docs/concepts/observability-primer/[OpenTelemetry over Tracing]].
+
+De eerste stap in statische analyse is om de broncode goed genoeg te kunnen begrijpen (parsen) om er verdere uitspraken over te doen. In het kader van https://husacct.github.io/HUSACCT/[HUSACCT] betekent dat dat we uit de broncode een structuur creeëren voor verdere analyse: het https://modularmoose.org/moose-wiki/[Famix Model]. Dit klinkt ingewikkeld (en alle randgevallen maken het dat ook), maar in de basis betekent dit dat we een regel Java als "class Koe extends Dier" kunnen vertalen naar een object "new Association(Koe.class, Dier.class, AssociationType.Inheritance)". Op die manier vertalen we allerlei verschillende constructen uit Java naar een object-structuur: Imports, Declaraties van variabelen, of parameters, het Call'en van methods, het Access'en van public fields, of het plaatsen van mooie @Annotaties boven een class of method (zoals @Override). Tot slot is er nog de overige 'Referentie' categorie voor als we bijv. een Cast willen uitvoeren in Java.
+
+De tweede stap is dat we gegeven zo'n object-model van de code, dat we proberen hier een menselijk leesbaar model van te maken. HUSACCT geeft bijv. al die verschillende types weer in een UML-package-diagram als een simpele standaard dependency-stippellijn. En niet alleen de directe dependencies worden weergegeven, ook de gevolgen daarvan: Als class Koe in package Kinderboerderij een dependency heeft op de baseclass Dier in package Natuur, dan heeft het package Kinderboerderij als geheel een dependency op Natuur. Het eindresultaat is dus dat je op verschillende niveaus inzicht kan krijgen in de flow van dependencies. Dit is niet 100% sluitend, de huidige versie van HUSACCT herkent bijv. geen 'lambdas' in Java, en zal dus evt. dependencies die daarin verschuilen missen. Die zou je dan theoretisch handmatig moeten toevoegen (hier heeft HUSACCT geen ondersteuning voor overigens). Op dit punt noemen we al deze 'blokjes' (of het nou classes, packages, of packages-met-packages zijn) gewoon 'modules'.
+
+De derde stap is dat we gaan redeneren over dat die dependency-structuren tussen deze modules betekenen. Is een bepaalde module misschien onderdeel van een laag? Of beschermt het andere modules als een component? In de meeste gevallen zal het herkennen van deze opvallende verdelingen uit zo'n UML-package-diagram vooral handwerk zijn, maar HUSACCT kan bijv. best aardig proberen om lagen te reconstrueren cite:[pruijt_layers]. Zodoende is een tool als HUSACCT vooral nog steeds een hulpmiddel om je eigen modellen te vormen, en daar duidelijke diagrammen van te tekenen. Hier zijn de algemene eigenschappen die we besproken hebben van lagen en componenten heel belangrijk.
+
+Als we bijv. tussen een module Presentation 63 dependencies naar Application, maar slechts 2 dependencies de andere kant op vinden, dan is het natuurlijk direct interessant om te kijken wat die twee dependencies de andere kant op voorstellen. Als die er niet geweest waren zou ons systeem direct eenvoudiger te begrijpen zijn, en zouden we misschien kunnen spreken van een duidelijke Presentatie-laag bovenop een Taakspecifieke-laag. Op diezelfde manier is het interessant om te zien dat als er in een Blackjack module 21 verschillende classes zitten, en er van buitenaf slechts verwijzingen zijn naar 4 van die classes, of we met een beetje tweaken (introduceren van een Facade bijv.) er voor kunnen zorgen dat er een zo strict mogelijke scheiding tussen binnen- en buitenkant ontstaat (oftewel een component).
+
+Kortom, een helder package-diagram kan ons inzicht geven in de Coupling & Cohesion binnen onze applicatie, en die kunnen ons weer verder sturen richting het aanmerken van componenten of lagen.
+
+=== Intended Architecture & Hypotheses
+
+Het is handig om even vooruit te lopen op <<Compliance>>. Naast het analyseren van de Implemented Architecture heeft HUSACCT ook functionaliteit voor het vastleggen van de Intended Architecture. Deze was primair bedoeld om preventief te werken, en architecturele drift tegen te gaan (en dit perspectief zullen we nog uitwerken in dat hoofdstuk). Daarnaast is het echter ook zeer geschikt voor het analyseren van bestaande code.
+
+De analyse van de 'Implemented Architecture' in HUSACCT volgt bijv. altijd de daadwerkelijk gerealiseerde package-structuur zoals deze in de broncode aanwezig is. Stel je hebt bijv. een Presentatie-laag met een Controller, die alles doorstuurt naar een Applicatie-laag, en die applicatielaag encapsuleert alles zeer strict met DTOs, en die DTOs zijn letterlijk de DTOs die we teruggeven in onze Controller:
+
+[plantuml,"default-pattern",svg]
+.Waar laat je DTOs?
+----
+skinparam classAttributeIconSize 0
+
+package presentation {
+    class XyzController {        
+    }
+
+    package DTO {
+        class XyzDTO
+    }
+}
+
+package application {
+    class XyzService {
+        + getXyzs() : List<XyzDTO>
+    }
+    
+    note right of XyzService::getXyzs()
+        Technisch gezien een backcall
+    end note
+}
+
+XyzController -right-> XyzDTO
+presentation .down.> application : depends
+XyzController --> XyzService
+
+----
+
+Strict genomen hebben we hier geen lagenstructuur, want de applicatielaag heeft in dit soort situaties zeer veel back-calls naar de presentatie-laag. Maar met de menselijke kennis wat een DTO is, en wat de beoogde taakverdelingen tussen deze lagen is kunnen we redelijk stellen dat 'lagentechnisch gezien' er niet zo heel veel spannends mis is. Dan kun je bijv. zeggen dat in de verdeling van packages we de DTOs architectureel behandelen alsof ze in de application-laag zitten (want zowel application als presentation mogen erbij), maar dat ze conceptueel vooral in de presentation-laag zitten, omdat de _functie_ die ze vervullen veel belangrijker is in de presentation-laag, dan in de applicationlaag.
+
+----
+Persoonlijk zou ik nog steeds het mapje de application-laag in verplaatsen, maar ik zou er prima mee kunnen leven als dit niet gebeurd, zonder me zorgen te maken over de integriteit van m'n lagenmodel.
+-Tom
+----
+
+Er zijn meer oplossingen mogelijk uiteraard (bijv. minder strict encapsuleren in de applciation laag), maar het belangrijke punt hier is dat we met onderscheid tussen de Intended Architecture en de Implemented Architecture een klein beetje soepel kunnen zijn ten opzichte van dit soort problemen. Het gevolg is dan dat we dit soort 'eigenlijk-niet-echt-een-architectureel-probleem'-gevallen kunnen verbergen, en ons kunnen concentreren op belangrijkere zaken.
+
+De laatste manier waarop je in de analyse-fase al goed gebruik kunt maken van een 'Intended Architecture' is als hypothese. Als jij het vermoeden hebt dat een aantal modules (dus een combinatie van packages en classes) bijv. samen zeer veel cohesie hebben, en weinig coupling daarbuiten, dan kun je ze in de intended architecture op één hoop gooien, en zien of het resultaat inderdaad veel duidelijker oogt dan de exacte package verdeling. Vroeger zat bijv. de Java GUI logica versplintert tussen java.swing & java.util.awt, terwijl je ze eigenlijk altijd samen als één geheel wou beschouwenfootnote:[hier schuiven we een hoop nuance onder het tapijt, maar dit vak gaat niet over de geschiedenis van Java...].
+
+
