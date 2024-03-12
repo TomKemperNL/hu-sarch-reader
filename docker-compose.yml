@@ -7,7 +7,7 @@ services:
       - ".:/documents"
   ascii-html:
     image: asciidoctor/docker-asciidoctor
-    command: "asciidoctor -o ./target/index.html -v -r asciidoctor-bibtex -r asciidoctor-diagram ./src/docs/asciidoc/sarch.adoc"
+    command: "./build-html.sh"
     volumes:
       - ".:/documents"
   

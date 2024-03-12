@@ -6,7 +6,7 @@ In een ideale wereld is de code die je als Architect aantreft in een project van
 
 De eerste indruk van elke Architect of Developer in deze situatie is: "WTF, dit moet allemaal opnieuw."
 
-image::sarch/images/5-reconstruction-wtfm.jpg["Programmeurs die code van hun voorgangers vervloeken. Slechte code krijgt veel WTFs, maar zelfs goede code krijgt er enkele."]
+image::images/5-reconstruction-wtfm.jpg["Programmeurs die code van hun voorgangers vervloeken. Slechte code krijgt veel WTFs, maar zelfs goede code krijgt er enkele."]
 
 Dus waarom zouden we überhaupt de moeite doen om ons met reconstructie bezig te houden?
 
