@@ -18,7 +18,7 @@ De aanwezigheid van een Facade is niet verplicht voor een component, de essentie
 
 === Logisch vs. Fysiek
 
-Op logisch niveau zijn componenten één van de meest intuïtieve manieren om je applicatie onder te verdelen. Op logisch niveau laten we veel detail weg, en focussen we puur op welke grove groepen functionaliteit we in de applicatie willen realiseren. Een simpel winkelvoorbeeld kan bijv. bestaan uit:
+Een logisch componenten model is één van de meest intuïtieve manieren om je applicatie onder te verdelen. Op logisch niveau laten we veel detail weg, en focussen we puur op welke grove groepen functionaliteit we in de applicatie willen realiseren. Een simpel winkelvoorbeeld kan bijv. bestaan uit:
 
 [plantuml,"logical-components",svg]
 .Voorbeeld logisch componentenmodel
@@ -48,11 +48,53 @@ Helaas is dit niet altijd mogelijk, stel het is bijv. heel erg belangrijk dat af
 
 Kortom, er is niet een objectief goed of fout voor 'het algemene geval'. Er zijn principes, zoals het idealiter vermijden van circulaire component-dependencies, en die zorgen er voor dat je bepaalde opties als architect wel, of juist niet, overweegt.
 
-Op fysiek niveau schakelen we over van planning naar daadwerkelijke implementatie in code. Dan moeten we explici
+Een logisch model is natuurlijk niet puur een paar 'boxes & lines', die vormen alleen maar een diagram. Het model is een mentaal construct, en in dat mentale construct horen dus ook de _dingen_ (classes, functies, verantwoordelijkheden etc.) die je in die boxes zou willen stoppen! Dus een model is pas volledig als je niet alleen de structuur helder hebt, maar ook *wat* je met die structuur wil bereiken.
 
+Afhankelijk van je doelpubliek dien je dit duidelijk te documenteren. Sommige lezers (bijv. collega architecten of programmeurs) zullen erg geholpen zijn met een illustratie van het soort domein-classes of methods dat je in de component wilt beleggen. Anderen (minder technische lezers) zullen juist een alinea tekst waarderen waarin je uitlegt wat voor usecases en data er in een component thuis horen. In weer andere situaties (kleine teams, ervaren programmeurs, ICTers als managers, of echt super-super-duidelijke namen en domeinen) kunnen zelfs puur de 'boxes & lines' voldoende zijn. Het gaat erom dat je het model in je hoofd zo goed mogelijk kan overbrengen op de lezer.
 
+Op fysiek niveau schakelen we over van planning naar daadwerkelijke implementatie in code. Dan moeten we explicieter zijn wat exact onze interface is en daar willen we preciezer zijn over exact welke classes er private zijn in de component. Aangezien we dan toch al in detail aan het treden zijn is het vaak ook een prima moment om bepaalde code-structuren of design-patterns in te zetten.
 
+[plantuml,"physical-components",svg]
+.Voorbeeld fysiek componentenmodel
+----
+component verkoop {
+    class Verkoop
+    class Klant
+    package bezorging #ffffff {
+        class Bezorging
+        class Route
+    }
+}
 
+component assortiment { 
+    class Product
+    package aanbiedingen #ffffff {
+        class Aanbieding
+        class Periode
+    }   
+}
+
+component voorraad #ffffff {
+    class Product {
+        +aantalInVoorraad: int
+    }
+    class Levering {
+
+    }
+}
+----
+
+In dit fysieke model zie je dat er 
+
+****
+Persoonlijk heb ik in m'n werkzame leven nooit gedetaileerde 'fysieke' modellen getekend. Als we met het team op dat niveau aan het nadenken waren was het meestal sneller om het gelijk ook in code uit te werken (of het was ietsje langzamer, maar dan had je daarna tenminste ook echt het product). Als je dit interessant vindt dan moet je eens naar https://www.agilealliance.org/resources/experience-reports/mob-programming-agile2014/[Mob-Programming] kijken.
+
+Grappig genoeg ben ik pas fysieke, gedetaileerde modellen gaan gebruiken als docent! Dit gebeurde vooral als ik een idee wou uitleggen aan een team studenten die werkten in een programmeertaal die ik zelf (nog) niet sprak (C, C++ en Rust staan allemaal nog op de 'todo'-list, maar die ken ik nog niet).
+
+Kortom, toen viel voor mij het kwartje waarom sommige architecten de voorkeur geven aan gedetailleerde modellen. De modellen zijn tricky te schrijven (want geen compiler, geen unit-tests, geen goede IDE), maar ze zijn behoorlijk intuïtief, zonder veel training, te lezen voor bijna alle programmeurs. En als architecten zijn we communicators first: als wij een beetje extra moeite moeten doen, om het voor onze lezers makkelijk te maken... dan doen we dat maar.
+
+-Tom
+****
 === Coupling en Cohesion
 
 Een ander perspectief op het bouwen van classes, en wederom gaat die theorie 1-1 mee naar components, is om te kijken naar de Coupling en Cohesion eigenschappen. Coupling hebben we al enigszins besproken in <<coupling>>. Binnen de context van componenten is één van de belangrijkste punten om op te letten is dat je heel erg oppast met coupling aangaan met andere componenten. Hoe meer de classes in jouw component een andere component nodig hebben, hoe moeilijker het gaat worden om jouw component te hergebruiken. Helemaal opvallend is als onderdelen van jouw component _meer_ dependencies buiten de component dan binnen de component hebben, dan zit die class waarschijnlijk op de verkeerde plek.
@@ -62,3 +104,5 @@ Een ander onderdeel is 'cohesie'. Als er classes in je component zitten die niet
 Kort door de bocht zegt Cohesion dus dat je classes (en interfaces, en abstract classes etc.) elkaar 'voldoende' nodig moeten hebben. Want anders gaan ze maar mooi in hun eigen component wonen.
 
 === Trucs met componentenontwerp
+
+

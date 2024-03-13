@@ -1,0 +1,13 @@
+[preface]
+== Inleiding
+
+Dit zijn de gedachten en ideeën die ik heb voorbereid om aan de Hogeschool Utrecht de cursus Software Architecture te geven. De slides van dat vak zijn nog steeds het primaire materiaal, maar hopelijk helpt dit als je bijv. een les hebt gemist. De hoop en intentie is dat dit een volwaardige reader kan worden, en dat het de slidedecks als primaire bron kan vervangen. Maar daar zijn we dus nog niet.
+
+De diagrammen in dit document zijn gemaakt met PlantUML. Dat levert niet de mooiste plaatjes op, maar is één van de snellere tools. Zelf zou ik je als student altijd aanraden om dit soort diagrammen 'een beetje slordig' met pen en papier, of op een whiteboard te maken. Dat is echter niet zo handig qua updates en tweaks.
+
+De rest van het document is ASCIIDoc, een Markdown-cloon met net iets meer support voor 'boekige' dingen (zoals inhoudsopgave en referenties).
+
+De broncode is uiteraard beschikbaar op https://github.com/tomkempernl/hu-sarch-reader[Github]. Pull-requests voor spelfouten zijn hartstikke welkom, evenals issues wbt. ontbrekende stof of onduidelijke alineas.
+
+// Tot slot, dit document is een kijk op een bestaand vak. Bij twijfel heb ik gekozen om dichter bij de bestaande stof te blijven, dus enige ouderwetsheid is onvermijdelijk.
+

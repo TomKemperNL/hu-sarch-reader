@@ -1,10 +1,92 @@
 == Layers
 
+Één van de oudste verdeling in software is die in lagen. Al vanaf het begin leren we dat het goed is om onze software netjes in lagen in te delen, en dus doen we dat maar. Maar waarom eigenlijk?
+
+[#klassiek2]
+[plantuml,"first-layers",svg]
+.Eerste concept van lagen
+----
+skinparam packageStyle folder
+
+package ui
+package "de rest"
+
+ui .down.> "de rest"
+----
+
+Voordat het overgrote deel van 'doorsnee' software development opgeslokt is door Web Development waren we vooral bezig met programmas die volledig op één pc draaiden (denk aan bijv. Word, je browser zelf, of een game).
+
+Programma's waren kleiner en simpeler (verwachtingen waren veel minder hoog), en het was niet ongebruikelijk dat professionele producten door slechts één of twee developers werden gemaakt. We hadden dus niet echt behoefte aan extra hulp om onze code begrijpelijk te houden, dat was allemaal best te doen met duidelijke naamgeving en andere basale trucs.
+
+Ook onder deze omstandigheden kwamen we er al snel achter dat het belangrijk was om minstens één heldere scheiding aan te brengen: hoe het programma eruit ziet vs. wat het nou eigenlijk doet. UI code is veel friemeliger ('knopje tikkie naar rechts, nog eentje, nu weer ietsje terug... Ja daar!'), en trekt ook veel meer feedback in iteraties aan ('kunnen we niet gewoon...') dan de kernfunctionaliteit.
+
+Je wilt dus snel kunnen itereren op UI, terwijl de rest zo stabiel mogelijk blijft. Kortom, we willen dependencies van UI naar 'de rest', maar niet andersom. En met dat éénrichtingsverkeer hebben we de kerngedachte van lagen te pakken!
+
 === Regels voor lagen
+
+Lagen stapelen we per definitie op elkaar. Met die stapeling suggereren we dat er slechts éénrichtingverkeer mogelijk is qua dependencies. Verder suggereren we ook dat je één-voor-één door de lagen heen gaat.
+
+Het terugroepen naar een bovenliggende laag noemt men een back-call, en de regel dat dit niet mag dus een back-call-ban. Dit is een erg belangrijke regel in gelaagde archutecturen waar zelden-tot-nooit uitzonderingen op worden toegestaan.
+
+Het overslaan van een laag noemen we een skip-call, en het bijbehorende verbod dus een skip-call-ban. Deze regel is niet zo alom gevolgd. In de meeste gevallen is het overslaan van een laag niet zo erg. Het creëert iets meer coupling, maar het alternatief is vaak dat je overal puur doorgeefluiken gaat inbouwen, en dat creëert veel meer coupling!
+
+Als je belangrijke verantwoordelijkheden in een laag belegd, bijv. als een applicatie-laag zoals in <<standaard4>> verantwoordelijk is voor het checken van security, of het implementeren van auditing, dan is het uiteraard niet zo'n slim idee die laag te skippen.
+
 
 === Het standaard 4-lagen model
 
+[#standaard4]
+[plantuml,"cisq-4-layers",svg]
+.Standaard 4-lagen
+----
+skinparam packageStyle folder
+
+package presentation {
+    class XyzController
+}
+package application {
+    class XyzService
+}
+package domain {
+    class Xyz
+}
+package data {
+    interface XyzRepository <<interface>>
+}
+
+presentation .down.> application
+application .down.> domain
+application .down.> data
+data .up.> domain
+----
+
+Het vier-lagen model dat we bij andere vakken gezien hebben is bijna helemaal zonder verrassingen. Het enige opvallende is dat de pijl van data naar domain omhoog in plaats van naar beneden gaat. Wat zou daar aan de hand zijn? Merk in elk geval op dat er geen vervelende cyclische afhankelijkheden zijn, dus qua structuur is het in elk geval stabiel.
+
+
+
+
 === Non-standaard lagenmodellen
+
+In de inleding spraken we van een klassiek 2-lagenmodel (<<klassiek2>>)
+
+
+Het is goed om ook nog even het ouderwetse 3-lagenmodel te bespreken:
+
+[#klassiek3]
+[plantuml,"3-layers",svg]
+.Standaard 3-lagen
+----
+skinparam packageStyle folder
+
+package presentation {}
+package domain {}
+package data {}
+
+presentation .down.> domain
+domain .down.> data
+----
+
+
 
 === Logisch vs. Fysiek
 

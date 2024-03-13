@@ -8,6 +8,7 @@
 :toclevels: 1
 Tom Kemper, en hopelijk nog veel meer
 
+include::./sarch/0-inleiding.adoc[]
 include::./sarch/1-intro.adoc[]
 include::./sarch/2-packages-dependencies.adoc[]
 include::./sarch/3-components.adoc[]
